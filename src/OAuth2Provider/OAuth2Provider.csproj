@@ -75,6 +75,7 @@
     <Compile Include="Authorization\IAuthorizeTokenRequest.cs" />
     <Compile Include="IConfiguration.cs" />
     <Compile Include="IConsumer.cs" />
+    <Compile Include="IEncryption.cs" />
     <Compile Include="IOAuthMessage.cs" />
     <Compile Include="IPasswordHasher.cs" />
     <Compile Include="Issuer\OAuthIssuer.cs" />

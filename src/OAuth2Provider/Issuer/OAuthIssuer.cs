@@ -7,7 +7,14 @@ namespace OAuth2Provider.Issuer
 {
     public class OAuthIssuer : IOAuthIssuer
     {
-        private readonly Encryption _encryptor = new Encryption();
+        private readonly IEncryption _encryptor;
+
+        public OAuthIssuer(IEncryption encryptor)
+        {
+            _encryptor = encryptor;
+        }
+
+        public OAuthIssuer() : this(new Encryption()) { }
 
         public string GenerateAccessToken(TokenData data)
         {

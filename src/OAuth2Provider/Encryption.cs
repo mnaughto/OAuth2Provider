@@ -5,24 +5,31 @@ using System.IO;
 
 namespace OAuth2Provider
 {
-    public class Encryption
+    public class Encryption : OAuth2Provider.IEncryption
     {
-        // Change these keys
-        private byte[] Key = { 194, 102, 189, 48, 27, 116, 61, 38, 55, 77, 231, 57, 212, 235, 152, 85, 102, 82, 234, 182, 109, 134, 62, 39, 104, 108, 68, 100, 98, 108, 148, 57 };
-        private byte[] Vector = { 77, 229, 88, 35, 159, 60, 118, 233, 108, 25, 41, 184, 155, 43, 70, 157 };
-
-
         private ICryptoTransform EncryptorTransform, DecryptorTransform;
         private System.Text.UTF8Encoding UTFEncoder;
 
-        public Encryption()
+        public Encryption() : this
+        (
+            new byte[] { 194, 102, 189, 48, 27, 116, 61, 38, 55, 77, 231, 57, 212, 235, 152, 85, 102, 82, 234, 182, 109, 134, 62, 39, 104, 108, 68, 100, 98, 108, 148, 57 },
+            new byte[] { 77, 229, 88, 35, 159, 60, 118, 233, 108, 25, 41, 184, 155, 43, 70, 157 }
+        )
+        {}
+
+        /// <summary>
+        /// Create an encryption utility using the specified key and vector.
+        /// </summary>
+        /// <param name="key">Array of length 32</param>
+        /// <param name="vector">Array of length 16</param>
+        public Encryption(byte[] key, byte[] vector)
         {
             //This is our encryption method
             RijndaelManaged rm = new RijndaelManaged();
 
             //Create an encryptor and a decryptor using our encryption method, key, and vector.
-            EncryptorTransform = rm.CreateEncryptor(this.Key, this.Vector);
-            DecryptorTransform = rm.CreateDecryptor(this.Key, this.Vector);
+            EncryptorTransform = rm.CreateEncryptor(key, vector);
+            DecryptorTransform = rm.CreateDecryptor(key, vector);
 
             //Used to translate bytes to text and vice versa
             UTFEncoder = new System.Text.UTF8Encoding();
